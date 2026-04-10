@@ -22,7 +22,6 @@ Everything needed to take DITTO from code to commercially viable product.
 - [ ] Get an Etherscan API key — https://etherscan.io/myapikey
 - [ ] Get a WalletConnect Project ID — https://cloud.walletconnect.com
 - [ ] Set up a dedicated deployer wallet (NOT your personal wallet) — fund with ETH for gas
-- [ ] **Change your GitHub password** (it was exposed in our chat earlier)
 - [ ] Set up `.env` and `frontend/.env.local` with real keys (never commit these)
 
 ### Branding & Assets
@@ -110,7 +109,7 @@ Everything needed to take DITTO from code to commercially viable product.
 
 ### Hosting
 
-- [ ] Push final code to GitHub (`LeifHansen/dittocoin-platform`)
+- [ ] Push final code to GitHub (`LeifHansen/DittoCoin`)
 - [ ] Deploy frontend to Vercel (easiest for Next.js) or Digital Ocean
 - [ ] Connect dittocoin.com domain via GoDaddy DNS
 - [ ] Set up SSL certificate (auto with Vercel)

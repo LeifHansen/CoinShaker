@@ -1,8 +1,40 @@
-node_modules
-cache
-artifacts
-coverage
+# ── Node / Hardhat ──────────────────────────────
+node_modules/
+cache/
+artifacts/
+coverage/
 coverage.json
-typechain
-typechain-types
+typechain/
+typechain-types/
+
+# ── Env ─────────────────────────────────────────
 .env
+.env.local
+*.env.local
+
+# ── OS junk ─────────────────────────────────────
+.DS_Store
+**/.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Build outputs ───────────────────────────────
+dist/
+dist-*/
+*.zip
+.next/
+out/
+
+# ── IDE / editors ───────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Local-only helper scripts ───────────────────
+*.command
+push-to-github.sh
+
+# ── Scratch ─────────────────────────────────────
+test_sync_file.txt
+TODO-LATER.md
