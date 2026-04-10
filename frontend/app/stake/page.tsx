@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   useAccount,
@@ -9,7 +9,6 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { parseEther, formatEther } from "viem";
-import { useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { CONTRACTS, STAKING_TIERS } from "@/lib/contracts";
 import DittoCoinABI from "@/abi/DittoCoin.json";
@@ -19,7 +18,8 @@ export default function StakePage() {
   const { address, isConnected, chain } = useAccount();
   const [selectedTier, setSelectedTier] = useState(1); // default: Hodler
   const [stakeAmount, setStakeAmount] = useState("");
-  const [txState, setTxState] = useState<"idle" | "approving" | "staking" | "done">("idle");
+  const [txState, setTxState] = useState<"idle" | "approving" | "staking" | "done" | "error">("idle");
+  const [txError, setTxError] = useState<string | null>(null);
 
   const tier = STAKING_TIERS[selectedTier];
   const amount = parseFloat(stakeAmount) || 0;
@@ -43,24 +43,41 @@ export default function StakePage() {
   const {
     writeContract: approveContract,
     data: approveHash,
-    isPending: isApproving,
+    error: approveWriteError,
     reset: resetApprove,
   } = useWriteContract();
 
-  const { isSuccess: approveConfirmed } = useWaitForTransactionReceipt({
+  const {
+    isSuccess: approveConfirmed,
+    error: approveReceiptError,
+  } = useWaitForTransactionReceipt({
     hash: approveHash,
   });
 
   const {
     writeContract: stakeContract,
     data: stakeHash,
-    isPending: isStaking,
+    error: stakeWriteError,
     reset: resetStake,
   } = useWriteContract();
 
-  const { isSuccess: stakeConfirmed } = useWaitForTransactionReceipt({
+  const {
+    isSuccess: stakeConfirmed,
+    error: stakeReceiptError,
+  } = useWaitForTransactionReceipt({
     hash: stakeHash,
   });
+
+  // Bubble any tx error into UI state so users aren't stuck on a spinner
+  useEffect(() => {
+    const err = approveWriteError || approveReceiptError || stakeWriteError || stakeReceiptError;
+    if (err && txState !== "idle" && txState !== "done" && txState !== "error") {
+      // wagmi errors expose .shortMessage for user-friendly text
+      const message = (err as any).shortMessage || err.message || "Transaction failed";
+      setTxError(message);
+      setTxState("error");
+    }
+  }, [approveWriteError, approveReceiptError, stakeWriteError, stakeReceiptError, txState]);
 
   // When approval confirms, fire the stake tx
   useEffect(() => {
@@ -96,6 +113,7 @@ export default function StakePage() {
 
     resetApprove();
     resetStake();
+    setTxError(null);
     setTxState("approving");
 
     approveContract({
@@ -179,6 +197,7 @@ export default function StakePage() {
                 onChange={(e) => {
                   setStakeAmount(e.target.value);
                   setTxState("idle");
+                  setTxError(null);
                 }}
                 placeholder="0.00"
                 className="w-full bg-ditto-purple-900/60 border border-white/10 rounded-xl px-4 py-4 text-white text-xl font-mono focus:outline-none focus:border-ditto-teal/40 transition-colors"
@@ -188,6 +207,7 @@ export default function StakePage() {
               onClick={() => {
                 setStakeAmount(formattedBalance.toString());
                 setTxState("idle");
+                setTxError(null);
               }}
               className="px-5 py-4 bg-white/5 text-white/50 rounded-xl text-sm font-medium hover:bg-white/10 hover:text-white/70 transition-colors border border-white/5"
             >
@@ -229,15 +249,30 @@ export default function StakePage() {
             </div>
           )}
 
+          {/* Error banner */}
+          {txState === "error" && txError && (
+            <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              <div className="font-semibold text-red-400 mb-0.5">Transaction failed</div>
+              <div className="text-red-300/80 break-words">{txError}</div>
+            </div>
+          )}
+
           {/* Action */}
           {isConnected ? (
             <button
               onClick={handleStake}
-              disabled={amount <= 0 || txState === "done"}
+              disabled={
+                amount <= 0 ||
+                txState === "done" ||
+                txState === "approving" ||
+                txState === "staking"
+              }
               className={`w-full py-4 rounded-xl font-bold text-lg transition-all btn-shine ${
                 txState === "done"
                   ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                  : txState !== "idle"
+                  : txState === "error"
+                  ? "bg-red-500/10 text-red-300 border border-red-500/30 hover:bg-red-500/20"
+                  : txState === "approving" || txState === "staking"
                   ? "bg-ditto-teal/20 text-ditto-teal animate-pulse"
                   : amount > 0
                   ? "bg-gradient-to-r from-ditto-teal to-emerald-400 text-ditto-purple-900 hover:shadow-lg hover:shadow-ditto-teal/20"
@@ -246,6 +281,8 @@ export default function StakePage() {
             >
               {txState === "done"
                 ? "\u2713 Staked Successfully!"
+                : txState === "error"
+                ? "Try again"
                 : txState === "approving"
                 ? "Approving DITTO..."
                 : txState === "staking"

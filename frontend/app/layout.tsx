@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Particles } from "@/components/Particles";
 import { NetworkGuard } from "@/components/NetworkGuard";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,7 +31,9 @@ export const metadata: Metadata = {
     apple: { url: "/logo-192.png", sizes: "192x192", type: "image/png" },
   },
   metadataBase: new URL("https://dittocoin.com"),
-  canonical: "https://dittocoin.com",
+  alternates: {
+    canonical: "https://dittocoin.com",
+  },
   openGraph: {
     type: "website",
     url: "https://dittocoin.com",
@@ -57,9 +60,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    "max-snippet": -1,
-    "max-image-preview": "large",
-    "max-video-preview": -1,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -108,7 +115,9 @@ export default function RootLayout({
           <div className="relative z-10 flex min-h-screen flex-col">
             <Navbar />
             <NetworkGuard>
-              <main className="flex-1">{children}</main>
+              <main className="flex-1">
+                <ErrorBoundary>{children}</ErrorBoundary>
+              </main>
             </NetworkGuard>
             <Footer />
           </div>
