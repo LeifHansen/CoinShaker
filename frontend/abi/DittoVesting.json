@@ -1,0 +1,42 @@
+[
+  {
+    "inputs": [],
+    "name": "claim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "beneficiary", "type": "address"}],
+    "name": "claimable",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "beneficiary", "type": "address"}],
+    "name": "getSchedule",
+    "outputs": [
+      {"internalType": "uint256", "name": "totalAmount", "type": "uint256"},
+      {"internalType": "uint256", "name": "tgePercent", "type": "uint256"},
+      {"internalType": "uint256", "name": "vestingDuration", "type": "uint256"},
+      {"internalType": "uint256", "name": "claimed", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tgeTimestamp",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dittoToken",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

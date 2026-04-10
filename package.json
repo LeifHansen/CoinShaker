@@ -1,0 +1,34 @@
+{
+  "name": "dittocoin",
+  "version": "1.0.0",
+  "description": "DittoCoin (DITTO) — a community-driven ERC20 memecoin on Ethereum",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat run scripts/deploy.js",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network mainnet",
+    "deploy:presale:sepolia": "npx hardhat run scripts/deploy-presale.js --network sepolia",
+    "deploy:presale:mainnet": "npx hardhat run scripts/deploy-presale.js --network mainnet",
+    "deploy:vault:sepolia": "npx hardhat run scripts/deploy-vault.js --network sepolia",
+    "deploy:vault:mainnet": "npx hardhat run scripts/deploy-vault.js --network mainnet",
+    "verify": "npx hardhat verify --network",
+    "clean": "npx hardhat clean",
+    "size": "npx hardhat compile && npx hardhat size-contracts"
+  },
+  "devDependencies": {
+    "@chainlink/contracts": "^1.5.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.4.0",
+    "hardhat": "^2.22.0"
+  },
+  "keywords": [
+    "ethereum",
+    "erc20",
+    "memecoin",
+    "dittocoin"
+  ],
+  "author": "",
+  "license": "MIT"
+}

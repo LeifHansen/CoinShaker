@@ -1,0 +1,70 @@
+[
+  {
+    "inputs": [{"internalType": "uint8", "name": "round", "type": "uint8"}, {"internalType": "address", "name": "_referrer", "type": "address"}],
+    "name": "buy",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint8", "name": "round", "type": "uint8"}],
+    "name": "refund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint8", "name": "round", "type": "uint8"}],
+    "name": "getRoundStatus",
+    "outputs": [
+      {"internalType": "uint8", "name": "state", "type": "uint8"},
+      {"internalType": "uint256", "name": "totalRaised", "type": "uint256"},
+      {"internalType": "uint256", "name": "tokensSold", "type": "uint256"},
+      {"internalType": "uint256", "name": "hardcapETH", "type": "uint256"},
+      {"internalType": "uint256", "name": "softcapETH", "type": "uint256"},
+      {"internalType": "uint256", "name": "tokenAllocation", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "buyer", "type": "address"}, {"internalType": "uint8", "name": "round", "type": "uint8"}],
+    "name": "getPurchase",
+    "outputs": [
+      {"internalType": "uint256", "name": "ethSpent", "type": "uint256"},
+      {"internalType": "uint256", "name": "tokensOwed", "type": "uint256"},
+      {"internalType": "uint256", "name": "referralBonus", "type": "uint256"},
+      {"internalType": "bool", "name": "refunded", "type": "bool"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "whitelisted",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "referralCount",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+    "name": "getReferralTier",
+    "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "referrer",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

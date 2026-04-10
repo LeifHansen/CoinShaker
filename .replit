@@ -1,0 +1,12 @@
+run = "npm test"
+entrypoint = "contracts/DittoCoin.sol"
+
+[nix]
+channel = "stable-24_05"
+
+[env]
+PATH = "/home/runner/$REPL_SLUG/node_modules/.bin:$PATH"
+
+[[hints]]
+regex = "Error: Cannot find module"
+message = "Run `npm install` in the Shell first."

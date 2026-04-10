@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  --ditto-purple-900: #1a0a2e;
+  --ditto-purple-800: #2d1052;
+  --ditto-purple-700: #0d0d2b;
+  --ditto-teal: #1ac8b0;
+  --ditto-pink: #d64b8a;
+  --ditto-purple-accent: #7b2fbe;
+}
+
+body {
+  background: linear-gradient(to right bottom, #1a0a2e, #2d1052, #0d0d2b);
+  min-height: 100vh;
+  color: white;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Glow effects */
+.glow-teal {
+  box-shadow: 0 0 30px rgba(26, 200, 176, 0.2), 0 0 60px rgba(26, 200, 176, 0.1);
+}
+.glow-pink {
+  box-shadow: 0 0 30px rgba(214, 75, 138, 0.2), 0 0 60px rgba(214, 75, 138, 0.1);
+}
+.glow-purple {
+  box-shadow: 0 0 30px rgba(123, 47, 190, 0.2), 0 0 60px rgba(123, 47, 190, 0.1);
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(45, 16, 82, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(123, 47, 190, 0.2);
+}
+.glass-card:hover {
+  border-color: rgba(26, 200, 176, 0.3);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #1ac8b0, #d64b8a, #7b2fbe);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Particle background */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(26, 200, 176, 0.3);
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #1a0a2e; }
+::-webkit-scrollbar-thumb { background: #2d1052; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #7b2fbe; }
+
+/* Button hover shine */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.6s;
+}
+.btn-shine:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}

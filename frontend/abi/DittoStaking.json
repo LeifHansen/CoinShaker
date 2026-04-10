@@ -1,0 +1,113 @@
+[
+  {
+    "inputs": [{ "name": "_dittoToken", "type": "address" }],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      { "name": "amount", "type": "uint256" },
+      { "name": "tier", "type": "uint8" }
+    ],
+    "name": "stake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "stakeIndex", "type": "uint256" }],
+    "name": "unstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "stakeIndex", "type": "uint256" }],
+    "name": "emergencyUnstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "name": "user", "type": "address" },
+      { "name": "stakeIndex", "type": "uint256" }
+    ],
+    "name": "calculateReward",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "user", "type": "address" }],
+    "name": "getStakes",
+    "outputs": [
+      {
+        "components": [
+          { "name": "amount", "type": "uint256" },
+          { "name": "startTime", "type": "uint256" },
+          { "name": "lockEnd", "type": "uint256" },
+          { "name": "tier", "type": "uint8" },
+          { "name": "withdrawn", "type": "bool" }
+        ],
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "user", "type": "address" }],
+    "name": "getStakeCount",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "tier", "type": "uint8" }],
+    "name": "getTierInfo",
+    "outputs": [
+      { "name": "name", "type": "string" },
+      { "name": "lockDuration", "type": "uint256" },
+      { "name": "multiplier", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "baseAprBps",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalStaked",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rewardPool",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "amount", "type": "uint256" }],
+    "name": "fundRewardPool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dittoToken",
+    "outputs": [{ "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
