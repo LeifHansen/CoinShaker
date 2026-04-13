@@ -7,6 +7,11 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/// @notice Interface for ERC20 tokens with a public burn function
+interface IBurnable {
+    function burn(uint256 amount) external;
+}
+
 /**
  * @title DittoPresale
  * @notice Three-round presale for DittoCoin ($DITTO).
@@ -164,11 +169,10 @@ contract DittoPresale is Ownable2Step, Pausable, ReentrancyGuard {
                 dittoToken.safeTransfer(vestingContract, data.tokensSold);
             }
 
-            // Burn unsold tokens
+            // Burn unsold tokens (reduces totalSupply)
             uint256 unsold = cfg.tokenAllocation - data.tokensSold;
             if (unsold > 0) {
-                // Send to zero address = burn (DittoCoin._update handles burns to address(0))
-                dittoToken.safeTransfer(address(0xdead), unsold);
+                IBurnable(address(dittoToken)).burn(unsold);
                 emit UnsoldTokensBurned(round, unsold);
             }
 
@@ -219,7 +223,13 @@ contract DittoPresale is Ownable2Step, Pausable, ReentrancyGuard {
 
         // Calculate tokens
         uint256 baseTokens = msg.value * cfg.tokenPrice;
-        require(data.tokensSold + baseTokens <= cfg.tokenAllocation, "Exceeds allocation");
+
+        // Estimate max possible referral bonus (both buyer + referrer = 2x bonus)
+        uint256 maxBonusTokens = 0;
+        if (_referrer != address(0) || referrer[msg.sender] != address(0)) {
+            maxBonusTokens = (baseTokens * REFERRAL_BONUS_BPS * 2) / 10_000;
+        }
+        require(data.tokensSold + baseTokens + maxBonusTokens <= cfg.tokenAllocation, "Exceeds allocation");
 
         // Record purchase
         p.ethSpent += msg.value;

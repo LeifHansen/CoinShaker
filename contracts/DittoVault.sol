@@ -137,6 +137,16 @@ contract DittoVault is Ownable2Step, Pausable, ReentrancyGuard {
     function removeAsset(address asset) external onlyOwner {
         require(assets[asset].supported, "Not supported");
         assets[asset].supported = false;
+
+        // Remove from supportedAssets array to keep enumeration clean
+        for (uint256 i = 0; i < supportedAssets.length; i++) {
+            if (supportedAssets[i] == asset) {
+                supportedAssets[i] = supportedAssets[supportedAssets.length - 1];
+                supportedAssets.pop();
+                break;
+            }
+        }
+
         emit AssetRemoved(asset);
     }
 

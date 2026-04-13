@@ -153,13 +153,13 @@ contract DittoVesting is Ownable2Step, ReentrancyGuard {
         require(s.totalAmount > 0, "No vesting schedule");
 
         uint256 vested = _vestedAmount(s);
-        uint256 claimable = vested - s.claimed;
-        require(claimable > 0, "Nothing to claim");
+        uint256 claimableAmount = vested - s.claimed;
+        require(claimableAmount > 0, "Nothing to claim");
 
-        s.claimed += claimable;
-        dittoToken.safeTransfer(msg.sender, claimable);
+        s.claimed += claimableAmount;
+        dittoToken.safeTransfer(msg.sender, claimableAmount);
 
-        emit TokensClaimed(msg.sender, claimable);
+        emit TokensClaimed(msg.sender, claimableAmount);
     }
 
     // ── View helpers ────────────────────────────────────────────

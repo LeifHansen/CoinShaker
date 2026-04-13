@@ -365,4 +365,48 @@ describe("DittoPresale", function () {
       ).to.not.be.reverted;
     });
   });
+
+  // ── Referral allocation overflow protection ─────────────────
+  describe("Referral allocation overflow protection", function () {
+    it("should reject purchase when referral bonus would exceed allocation", async function () {
+      // Configure a tight round: allocation barely fits the base purchase
+      const tightAllocation = ethers.parseEther("50000000"); // 50M DITTO
+      // 50M per ETH × 1 ETH = 50M base tokens (fills allocation exactly)
+      // But with referral bonus (5% × 2 = 10%), total would be 55M > 50M
+      await presale.configureRound(
+        2, // Public round
+        50_000_000n,
+        ethers.parseEther("10"),
+        0, // no softcap
+        ethers.parseEther("5"),
+        tightAllocation,
+        false
+      );
+      await presale.activateRound(2);
+
+      // buyer1 buys with a referrer — should revert because bonus would exceed allocation
+      await expect(
+        presale.connect(buyer1).buy(2, referrer1.address, { value: ethers.parseEther("1") })
+      ).to.be.revertedWith("Exceeds allocation");
+    });
+  });
+
+  // ── Proper burn on finalization ──────────────────────────────
+  describe("Proper burn on finalization", function () {
+    it("should reduce totalSupply when burning unsold tokens", async function () {
+      await presale.setWhitelist([buyer1.address], true);
+      await presale.activateRound(0);
+
+      // Buy some but not all
+      await presale.connect(buyer1).buy(0, ethers.ZeroAddress, { value: ethers.parseEther("2") });
+
+      const supplyBefore = await dittoCoin.totalSupply();
+
+      await presale.finalizeRound(0);
+
+      const supplyAfter = await dittoCoin.totalSupply();
+      // totalSupply should have decreased (unsold tokens were burned)
+      expect(supplyAfter).to.be.lt(supplyBefore);
+    });
+  });
 });

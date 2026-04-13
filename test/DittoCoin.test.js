@@ -277,4 +277,33 @@ describe("DittoCoin", function () {
       await expect(dittoCoin.connect(addr1).pause()).to.be.reverted;
     });
   });
+
+  // ── Public burn function ─────────────────────────────────────
+
+  describe("Public burn function", function () {
+    it("should allow any holder to burn their own tokens", async function () {
+      const amount = ethers.parseEther("1000000");
+      await dittoCoin.transfer(addr1.address, amount); // exempt, no fees
+
+      const supplyBefore = await dittoCoin.totalSupply();
+      await dittoCoin.connect(addr1).burn(ethers.parseEther("500000"));
+      const supplyAfter = await dittoCoin.totalSupply();
+
+      expect(supplyAfter).to.equal(supplyBefore - ethers.parseEther("500000"));
+      expect(await dittoCoin.balanceOf(addr1.address)).to.equal(ethers.parseEther("500000"));
+    });
+
+    it("should revert if burning more than balance", async function () {
+      await dittoCoin.transfer(addr1.address, ethers.parseEther("1000"));
+      await expect(
+        dittoCoin.connect(addr1).burn(ethers.parseEther("2000"))
+      ).to.be.reverted;
+    });
+
+    it("should update totalBurned correctly", async function () {
+      const burnAmount = ethers.parseEther("1000000");
+      await dittoCoin.burn(burnAmount);
+      expect(await dittoCoin.totalBurned()).to.equal(burnAmount);
+    });
+  });
 });

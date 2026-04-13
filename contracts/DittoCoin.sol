@@ -186,6 +186,13 @@ contract DittoCoin is ERC20, Ownable2Step, Pausable {
         return nextHalvingTime - block.timestamp;
     }
 
+    // ── Burn helper ──────────────────────────────────────────────
+
+    /// @notice Burn tokens from the caller's balance (reduces totalSupply)
+    function burn(uint256 amount) external {
+        _burn(msg.sender, amount);
+    }
+
     // ── Other view helpers ──────────────────────────────────────
 
     /// @notice Returns how many tokens have been burned so far

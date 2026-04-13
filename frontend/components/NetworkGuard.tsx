@@ -11,7 +11,7 @@ export function NetworkGuard({ children }: { children: React.ReactNode }) {
   const { chain, isConnected } = useAccount();
   const { switchChain } = useSwitchChain();
 
-  const supportedIds = [mainnet.id, sepolia.id];
+  const supportedIds: number[] = [mainnet.id, sepolia.id];
   const isWrongNetwork = isConnected && chain && !supportedIds.includes(chain.id);
 
   if (!isWrongNetwork) return <>{children}</>;

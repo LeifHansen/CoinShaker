@@ -78,6 +78,22 @@ describe("DittoVault", function () {
       expect(config.supported).to.be.false;
     });
 
+    it("should remove asset from supportedAssets array", async function () {
+      // Add a second asset so we can verify swap-and-pop
+      const mockFeed2 = await (await ethers.getContractFactory("MockPriceFeed")).deploy(1_00000000n, 8);
+      await vault.addAsset(depositor1.address, await mockFeed2.getAddress(), 6);
+
+      let assets = await vault.getSupportedAssets();
+      expect(assets.length).to.equal(2);
+
+      // Remove first asset (ETH)
+      await vault.removeAsset(ethers.ZeroAddress);
+
+      assets = await vault.getSupportedAssets();
+      expect(assets.length).to.equal(1);
+      expect(assets[0]).to.equal(depositor1.address);
+    });
+
     it("should reject non-owner asset management", async function () {
       await expect(
         vault.connect(depositor1).addAsset(depositor1.address, await mockPriceFeed.getAddress(), 18)
