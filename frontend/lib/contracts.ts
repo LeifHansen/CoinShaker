@@ -3,8 +3,8 @@
 export const CONTRACTS = {
   // Sepolia testnet (update after deploy)
   sepolia: {
-    dittoCoin: "0x0000000000000000000000000000000000000000" as `0x${string}`,
-    dittoStaking: "0x0000000000000000000000000000000000000000" as `0x${string}`,
+    dittoCoin: "0xE85644Ab000b8741837746335819F0AE750e1Fd6" as `0x${string}`,
+    dittoStaking: "0x8F293C24E81FeF1f0aE3c381CBd6AD78236b810c" as `0x${string}`,
     dittoPresale: "0x0000000000000000000000000000000000000000" as `0x${string}`,
     dittoVesting: "0x0000000000000000000000000000000000000000" as `0x${string}`,
     dittoVault: "0x0000000000000000000000000000000000000000" as `0x${string}`,
